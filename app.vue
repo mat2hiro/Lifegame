@@ -25,56 +25,81 @@
         </button>
       </div>
     </div>
-    <div
-      class="fixed bottom-3 right-3 drop-shadow-md rounded p-2 bg-white flex gap-2 items-center"
-    >
-      <div>
-        <label class="block text-center text-sm">Speed</label>
-        <input type="range" min="0" max="4" step="1" v-model="speed" />
+    <div class="fixed bottom-3 right-3 flex flex-col items-end">
+      <!-- <div
+        class="mb-3 drop-shadow-md rounded p-2 bg-white inline-flex gap-2 items-center"
+      >
+        <label
+          for="default-toggle"
+          class="inline-flex relative items-center cursor-pointer"
+        >
+          <input
+            type="checkbox"
+            v-model="isEraser"
+            id="default-toggle"
+            class="sr-only peer"
+          />
+          <div
+            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+          ></div>
+          <span
+            class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >Eraser</span
+          >
+        </label>
+      </div> -->
+      <div
+        class="drop-shadow-md rounded p-2 bg-white inline-flex gap-2 items-center"
+      >
+        <div>
+          <label class="block text-center text-sm">Speed</label>
+          <input type="range" min="0" max="4" step="1" v-model="speed" />
+        </div>
+        <button
+          v-if="timeoutId !== null"
+          class="rounded bg-blue-500 hover:bg-blue-700 text-white p-1"
+          type="button"
+          @click.prevent="stop"
+        >
+          Stop
+        </button>
+        <button
+          v-else
+          class="rounded bg-blue-500 hover:bg-blue-700 text-white p-1"
+          type="button"
+          @click.prevent="start"
+        >
+          Start
+        </button>
+        <button
+          class="rounded bg-blue-500 hover:bg-blue-700 text-white p-1"
+          type="button"
+          @click.prevent="nextGeneration"
+        >
+          Next
+        </button>
+        <button
+          class="rounded bg-gray-500 hover:bg-gray-700 text-white p-1"
+          type="button"
+          @click.prevent="randomize"
+        >
+          Random
+        </button>
+        <button
+          class="rounded bg-gray-500 hover:bg-gray-700 text-white p-1"
+          type="button"
+          @click.prevent="clear"
+        >
+          Clear
+        </button>
       </div>
-      <button
-        v-if="timeoutId !== null"
-        class="rounded bg-blue-500 hover:bg-blue-700 text-white p-1"
-        type="button"
-        @click.prevent="stop"
-      >
-        Stop
-      </button>
-      <button
-        v-else
-        class="rounded bg-blue-500 hover:bg-blue-700 text-white p-1"
-        type="button"
-        @click.prevent="start"
-      >
-        Start
-      </button>
-      <button
-        class="rounded bg-blue-500 hover:bg-blue-700 text-white p-1"
-        type="button"
-        @click.prevent="nextGeneration"
-      >
-        Next
-      </button>
-      <button
-        class="rounded bg-gray-500 hover:bg-gray-700 text-white p-1"
-        type="button"
-        @click.prevent="randomize"
-      >
-        Random
-      </button>
-      <button
-        class="rounded bg-gray-500 hover:bg-gray-700 text-white p-1"
-        type="button"
-        @click.prevent="clear"
-      >
-        Clear
-      </button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 const timeoutId = ref<NodeJS.Timeout>(null);
+// const isEraser = ref(false);
 const speed = ref(2);
 const sizeFactor = ref(1);
 const cellSize = computed(() => 8 * sizeFactor.value);
@@ -129,6 +154,7 @@ const refreshCells = (state: (0 | 1)[][]) => {
 };
 
 const updateCell = (x: number, y: number, alive: 0 | 1) => {
+  if (cellState[x][y] === alive) return;
   const context = canvasContext.value;
   const size = cellSize.value;
   context.fillStyle = alive ? "#98971a" : "#282828";
@@ -169,7 +195,7 @@ const drawPoint = (e: MouseEvent) => {
   updateCell(
     Math.floor((e.clientX - rect.left) / size),
     Math.floor((e.clientY - rect.top) / size),
-    1
+    e.shiftKey ? 0 : 1
   );
 };
 
