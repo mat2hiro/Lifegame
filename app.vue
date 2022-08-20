@@ -7,6 +7,37 @@
       @mousemove="draw"
       @mouseup="drawEnd"
     />
+    <div class="fixed top-3 right-3">
+      <div class="drop-shadow-md rounded p-2 bg-white">
+        <div class="flex gap-2 items-center">
+          <NuxtLink
+            to="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"
+            target="_blank"
+          >
+            <font-awesome-icon icon="fa-solid fa-circle-question" />
+          </NuxtLink>
+          <button type="button" @click.prevent="toggleInfo">
+            <h1 class="inline mr-2">Conway's Game of Life</h1>
+            <font-awesome-icon v-if="infoOpen" icon="fa-solid fa-chevron-up" />
+            <font-awesome-icon v-else icon="fa-solid fa-chevron-down" />
+          </button>
+        </div>
+        <div
+          v-if="infoOpen"
+          class="mt-2 border-dashed border-gray-400 border-t-2 pt-2 flex flex-col gap-1 items-start"
+        >
+          <p>
+            <font-awesome-icon icon="fa-solid fa-arrow-pointer" />:
+            <font-awesome-icon icon="fa-solid fa-pen" />
+          </p>
+          <p>
+            <font-awesome-icon icon="fa-solid fa-circle-up" /> +
+            <font-awesome-icon icon="fa-solid fa-arrow-pointer" />:
+            <font-awesome-icon icon="fa-solid fa-eraser" />
+          </p>
+        </div>
+      </div>
+    </div>
     <div class="fixed bottom-3 left-3">
       <div class="inline-flex flex-col rounded border border-black bg-white">
         <button
@@ -14,83 +45,63 @@
           class="w-8 rounded-t border-b border-black p-1 bg-white hover:bg-gray-200"
           @click.prevent="sizeChange(sizeFactor + 1)"
         >
-          +
+          <font-awesome-icon icon="fa-solid fa-plus" />
         </button>
         <button
           type="button"
           class="w-8 rounded-b p-1 bg-white hover:bg-gray-200"
           @click.prevent="sizeChange(sizeFactor - 1)"
         >
-          -
+          <font-awesome-icon icon="fa-solid fa-minus" />
         </button>
       </div>
     </div>
     <div class="fixed bottom-3 right-3 flex flex-col items-end">
-      <!-- <div
-        class="mb-3 drop-shadow-md rounded p-2 bg-white inline-flex gap-2 items-center"
-      >
-        <label
-          for="default-toggle"
-          class="inline-flex relative items-center cursor-pointer"
-        >
-          <input
-            type="checkbox"
-            v-model="isEraser"
-            id="default-toggle"
-            class="sr-only peer"
-          />
-          <div
-            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
-          ></div>
-          <span
-            class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
-            >Eraser</span
-          >
-        </label>
-      </div> -->
       <div
         class="drop-shadow-md rounded p-2 bg-white inline-flex gap-2 items-center"
       >
         <div>
-          <label class="block text-center text-sm">Speed</label>
+          <label class="block text-center text-sm"
+            ><font-awesome-icon icon="fa-solid fa-forward"
+          /></label>
           <input type="range" min="0" max="4" step="1" v-model="speed" />
         </div>
         <button
           v-if="timeoutId !== null"
-          class="rounded bg-blue-500 hover:bg-blue-700 text-white p-1"
+          class="w-8 rounded bg-blue-500 hover:bg-blue-700 text-white p-1"
           type="button"
           @click.prevent="stop"
         >
-          Stop
+          <font-awesome-icon icon="fa-solid fa-pause" />
         </button>
         <button
           v-else
-          class="rounded bg-blue-500 hover:bg-blue-700 text-white p-1"
+          class="w-8 rounded bg-blue-500 hover:bg-blue-700 text-white p-1"
           type="button"
           @click.prevent="start"
         >
-          Start
+          <font-awesome-icon icon="fa-solid fa-play" />
         </button>
         <button
-          class="rounded bg-blue-500 hover:bg-blue-700 text-white p-1"
+          class="w-8 rounded bg-blue-500 hover:bg-blue-700 text-white p-1"
           type="button"
           @click.prevent="nextGeneration"
         >
-          Next
+          <font-awesome-icon icon="fa-solid fa-forward-step" />
         </button>
         <button
-          class="rounded bg-gray-500 hover:bg-gray-700 text-white p-1"
+          class="w-8 rounded bg-gray-500 hover:bg-gray-700 text-white p-1"
           type="button"
           @click.prevent="randomize"
         >
-          Random
+          <font-awesome-icon icon="fa-solid fa-shuffle" />
         </button>
         <button
-          class="rounded bg-gray-500 hover:bg-gray-700 text-white p-1"
+          class="w-8 rounded bg-gray-500 hover:bg-gray-700 text-white p-1"
           type="button"
           @click.prevent="clear"
         >
-          Clear
+          <font-awesome-icon icon="fa-solid fa-trash-can" />
         </button>
       </div>
     </div>
@@ -99,9 +110,9 @@
 
 <script lang="ts" setup>
 const timeoutId = ref<NodeJS.Timeout>(null);
-// const isEraser = ref(false);
 const speed = ref(2);
 const sizeFactor = ref(1);
+const infoOpen = ref(false);
 const cellSize = computed(() => 8 * sizeFactor.value);
 let isDraw = false;
 let cellState: (0 | 1)[][] = [];
@@ -203,7 +214,7 @@ const generationLoop = () => {
   nextGeneration();
   timeoutId.value = setTimeout(
     generationLoop,
-    [10, 50, 100, 500, 1000][speed.value]
+    [1000, 500, 100, 50, 10][speed.value]
   );
 };
 
@@ -249,6 +260,10 @@ const clear = () => {
     })
   );
   refreshCells(cellState);
+};
+
+const toggleInfo = () => {
+  infoOpen.value = !infoOpen.value;
 };
 </script>
 

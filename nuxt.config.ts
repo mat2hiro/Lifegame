@@ -4,4 +4,5 @@ import { defineNuxtConfig } from "nuxt";
 export default defineNuxtConfig({
   modules: ["@nuxtjs/tailwindcss"],
   css: ["@/assets/main.scss"],
+  plugins: ["@/plugins/fontawesome.ts"],
 });
