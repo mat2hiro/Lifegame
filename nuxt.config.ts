@@ -7,15 +7,7 @@ export default defineNuxtConfig({
   head: {
     title: "LifeGame",
   },
-  css: ["@/assets/main.scss", "@/assets/tailwind.css"],
+  css: ["@/assets/css/main.scss"],
   plugins: ["@/plugins/fontawesome.ts"],
-  nitro: {
-    preset: "node",
-  },
-  // buildModules: ["@nuxtjs/tailwindcss"],
-  build: {
-    postcss: {
-      postcssOptions: require("./postcss.config.js"),
-    },
-  },
+  modules: ["@nuxtjs/tailwindcss"],
 });
