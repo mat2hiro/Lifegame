@@ -15,17 +15,29 @@
     </div>
     <div
       v-if="infoOpen"
-      class="mt-2 border-dashed border-gray-400 border-t-2 pt-2 flex flex-col gap-1 items-start"
+      class="mt-2 border-dashed border-gray-400 border-t-2 pt-2 flex items-end justify-between"
     >
-      <p>
-        <font-awesome-icon icon="fa-solid fa-arrow-pointer" />:
-        <font-awesome-icon icon="fa-solid fa-pen" />
-      </p>
-      <p>
-        <font-awesome-icon icon="fa-solid fa-circle-up" /> +
-        <font-awesome-icon icon="fa-solid fa-arrow-pointer" />:
-        <font-awesome-icon icon="fa-solid fa-eraser" />
-      </p>
+      <ul class="flex flex-col gap-1 items-start list-disc list-outside pl-4">
+        <li>
+          <font-awesome-icon icon="fa-solid fa-arrow-pointer" />:
+          <font-awesome-icon icon="fa-solid fa-pen" />
+        </li>
+        <li>
+          <font-awesome-icon icon="fa-solid fa-circle-up" /> +
+          <font-awesome-icon icon="fa-solid fa-arrow-pointer" />:
+          <font-awesome-icon icon="fa-solid fa-eraser" />
+        </li>
+      </ul>
+      <div>
+        <div class="flex gap-1 items-center justify-evenly">
+          <NuxtLink to="https://github.com/mat2hiro/Lifegame" target="_blank">
+            <font-awesome-icon icon="fa-brands fa-github" />
+          </NuxtLink>
+          <NuxtLink to="https://mat2.net/profile/" target="_blank">
+            <ImageIcon src="/blogicon.png" />
+          </NuxtLink>
+        </div>
+      </div>
     </div>
   </FloatCard>
 </template>
