@@ -1,25 +1,27 @@
 <template>
-  <div>
-    <canvas
-      id="lifeGameField"
-      ref="fieldCanvas"
-      @mousedown="drawStart"
-      @mousemove="draw"
-      @mouseup="drawEnd"
-    />
-    <InfoCard class="top-3 right-3" />
-    <ZoomCard class="bottom-3 left-3" :size="sizeFactor" @change="sizeChange" />
-    <OperationCard
-      class="bottom-3 right-3"
-      v-model:speed="speed"
-      :isStart="!!timeoutId"
-      @stop="stop"
-      @start="start"
-      @next="nextGeneration"
-      @random="randomize"
-      @clear="clear"
-    />
-  </div>
+  <Head>
+    <Title>Lifegame</Title>
+    <Link rel="icon" href="/favicon.svg" type="image/svg+xml"></Link>
+  </Head>
+  <canvas
+    id="lifeGameField"
+    ref="fieldCanvas"
+    @mousedown="drawStart"
+    @mousemove="draw"
+    @mouseup="drawEnd"
+  />
+  <InfoCard class="top-3 right-3" />
+  <ZoomCard class="bottom-3 left-3" :size="sizeFactor" @change="sizeChange" />
+  <OperationCard
+    class="bottom-3 right-3"
+    v-model:speed="speed"
+    :isStart="!!timeoutId"
+    @stop="stop"
+    @start="start"
+    @next="nextGeneration"
+    @random="randomize"
+    @clear="clear"
+  />
 </template>
 
 <script lang="ts" setup>
