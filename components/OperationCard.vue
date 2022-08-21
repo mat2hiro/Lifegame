@@ -6,7 +6,7 @@
       /></label>
       <input type="range" min="0" max="4" step="1" v-model="speedIO" />
     </div>
-    <RoundedButton v-if="isStart" class="w-8" @click="stop">
+    <RoundedButton v-if="!!timeoutId" class="w-8" @click="stop">
       <font-awesome-icon icon="fa-solid fa-pause" />
     </RoundedButton>
     <RoundedButton v-else class="w-8" @click="start">
@@ -25,30 +25,39 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps<{ speed: number; isStart: boolean }>();
-
-const emit = defineEmits<{
-  (e: "update:speed", newSpeed: number): number;
-  (e: "stop"): void;
-  (e: "start"): void;
-  (e: "next"): void;
-  (e: "random"): void;
-  (e: "clear"): void;
-}>();
+const lifeGameState = useLifeGameState();
+const speed = ref(100);
+const timeoutId = ref<NodeJS.Timeout>(null);
 
 const speedList = [1000, 500, 100, 50, 10];
 const speedIO = computed({
   get: () =>
     Math.max(
-      speedList.findIndex((sp) => sp === props.speed),
+      speedList.findIndex((sp) => sp === speed.value),
       0
     ),
-  set: (newSpeed: number) => emit("update:speed", speedList[newSpeed]),
+  set: (newSpeed: number) => (speed.value = speedList[newSpeed]),
 });
 
-const stop = () => emit("stop");
-const start = () => emit("start");
-const next = () => emit("next");
-const random = () => emit("random");
-const clear = () => emit("clear");
+const stop = () => {
+  if (!timeoutId.value) return;
+  clearTimeout(timeoutId.value);
+  timeoutId.value = null;
+};
+
+const generationLoop = () => {
+  lifeGameState.next();
+  timeoutId.value = setTimeout(generationLoop, speed.value);
+};
+const start = generationLoop;
+
+const next = lifeGameState.next;
+
+const random = () => {
+  lifeGameState.updateField(() => (Math.random() < 0.2 ? 1 : 0));
+};
+
+const clear = () => {
+  lifeGameState.updateField(() => 0);
+};
 </script>
