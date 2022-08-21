@@ -1,16 +1,18 @@
 <template>
-  <div>
-    <canvas
-      id="lifeGameField"
-      ref="fieldCanvas"
-      @mousedown="drawStart"
-      @mousemove="draw"
-      @mouseup="drawEnd"
-    />
-    <InfoCard class="top-3 right-3" />
-    <ZoomCard class="bottom-3 left-3" />
-    <OperationCard class="bottom-3 right-3" />
-  </div>
+  <Head>
+    <Title>Lifegame</Title>
+    <Link rel="icon" href="/favicon.svg" type="image/svg+xml"></Link>
+  </Head>
+  <canvas
+    id="lifeGameField"
+    ref="fieldCanvas"
+    @mousedown="drawStart"
+    @mousemove="draw"
+    @mouseup="drawEnd"
+  />
+  <InfoCard class="top-3 right-3" />
+  <ZoomCard class="bottom-3 left-3" />
+  <OperationCard class="bottom-3 right-3" />
 </template>
 
 <script lang="ts" setup>
