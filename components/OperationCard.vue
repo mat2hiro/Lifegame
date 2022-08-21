@@ -45,18 +45,13 @@ const stop = () => {
   timeoutId.value = null;
 };
 
-const start = () => {
-  generationLoop();
-};
-
 const generationLoop = () => {
   lifeGameState.next();
   timeoutId.value = setTimeout(generationLoop, speed.value);
 };
+const start = generationLoop;
 
-const next = () => {
-  lifeGameState.next();
-};
+const next = lifeGameState.next;
 
 const random = () => {
   lifeGameState.updateField(() => (Math.random() < 0.2 ? 1 : 0));
