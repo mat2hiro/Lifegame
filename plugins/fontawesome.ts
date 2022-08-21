@@ -1,6 +1,8 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
+  faAnglesLeft,
+  faAnglesRight,
   faArrowPointer,
   faArrowRight,
   faChevronDown,
@@ -19,6 +21,7 @@ import {
   faShuffle,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
 export default defineNuxtPlugin((nuxtApp) => {
   library.add(
@@ -38,7 +41,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     faForward,
     faPen,
     faEraser,
-    faArrowRight
+    faArrowRight,
+    faAnglesRight,
+    faAnglesLeft,
+    faGithub
   );
   nuxtApp.vueApp.component("fa-icon", FontAwesomeIcon as any);
 });
