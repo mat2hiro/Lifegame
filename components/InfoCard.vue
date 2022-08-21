@@ -34,7 +34,7 @@
             <font-awesome-icon icon="fa-brands fa-github" />
           </NuxtLink>
           <NuxtLink to="https://mat2.net/profile/" target="_blank">
-            <ImageIcon src="/blogicon.png" />
+            <ImageIcon src="https://mat2.net/icon/favicon.png" />
           </NuxtLink>
         </div>
       </div>
