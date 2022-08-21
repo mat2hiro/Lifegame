@@ -11,7 +11,7 @@ const useLigeGameState = () => {
     field: [],
   }));
   const canvasState = useCanvasState(state);
-  const lifeGame = useLifeGame(state);
+  const lifeGame = useLifeGame();
 
   const initialize = (canvas: HTMLCanvasElement) => {
     state.value.field = canvasState.initializeField(canvas);
@@ -35,8 +35,7 @@ const useLigeGameState = () => {
   };
 
   const next = () => {
-    const nextField = lifeGame.getNextGeneration();
-    updateField((x, y) => nextField[x][y]);
+    updateField(lifeGame.getNextGeneration(state.value.field));
   };
 
   const resize = (diff: number) => {
