@@ -47,10 +47,6 @@ const drawPoint = (e: MouseEvent) => {
 </script>
 
 <style lang="scss" scoped>
-#lifeGameField {
-  border: solid;
-}
-
 .floatingContainer {
   position: fixed;
   bottom: 30px;
